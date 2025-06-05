@@ -10,7 +10,7 @@ let extensionSettings = {
 // 插件启用状态
 let pluginEnabled = true;
 
-// 代理pac弭谤
+// 代理pac脚本模版
 let pacTemplate = `
 function FindProxyForURL(url, host) {
     const includeDomains = '{PROXYED_DOMAINS_STR}';
@@ -283,7 +283,7 @@ function testProxyAvailability(server, port, callback) {
                 console.log('代理测试超时');
                 restoreProxySettings();
                 callback({ success: false, error: '测试超时' });
-            }, 10000);
+            }, testTimeout);
 
             // 使用 fetch API 发起测试请求
             console.log('开始测试代理连接...');
