@@ -11,7 +11,7 @@ let extensionSettings = {
 let pluginEnabled = true;
 
 // 代理pac脚本模版
-let pacTemplate = `
+const pacTemplate = `
 function FindProxyForURL(url, host) {
     const includeDomains = '{PROXYED_DOMAINS_STR}';
 
@@ -86,6 +86,10 @@ loadStoredData();
 // 监听 HTTP 请求的结果
 chrome.webRequest.onCompleted.addListener(
     function (details) {
+        if (!pluginEnabled) {
+            console.log('插件已禁用，不做任何处理');
+            return;
+        }
         // 检查是否收到 403 错误
         if (details.statusCode === 403) {
 
@@ -109,7 +113,7 @@ chrome.webRequest.onCompleted.addListener(
                 updateProxyRules();
 
                 // 记录日志
-                console.log(`已为 ${domain} 启用代理，因为检测到 403 错误`);
+                console.log(`已为 ${domain} 启用代理`);
 
                 // 通知用户
                 chrome.notifications.create({
@@ -119,14 +123,18 @@ chrome.webRequest.onCompleted.addListener(
                     message: `已为 ${domain} 启用代理，因为检测到 403 错误`
                 });
 
-                // 只刷新请求来源的标签页
+                // 确保尝试刷新请求来源的标签页，不管是主资源还是子资源的 403 错误
+                console.log(`xxxx ${details.tabId}`);
                 if (details.tabId && details.tabId !== -1) {
-                    chrome.tabs.get(details.tabId, function (tab) {
-                        console.log(`刷新标签页id: ${details.tabId}`);
-                        console.log(`刷新标签页url: ${tab.url});}`);
-                        chrome.tabs.reload(details.tabId);
-                        console.log(`已为 ${domain} 启用代理，因为检测到 403 错误，并刷新了标签页: ${tab.url}`);
-                    });
+                    // 使用延迟确保代理设置已应用
+                    setTimeout(() => {
+                        try {
+                            chrome.tabs.reload(details.tabId);
+                            console.log(`已尝试刷新标签页 ${details.tabId}`);
+                        } catch (e) {
+                            console.log(`刷新标签页失败: ${e}`);
+                        }
+                    }, 500); // 500毫秒延迟，确保代理设置已应用
                 }
             }
         }
@@ -150,10 +158,10 @@ function reloadTab(tabId = null) {
         chrome.tabs.get(tabId, function (tab) {
             if (!chrome.runtime.lastError && tab) {
                 // 只刷新http和https页面
-                if (tab.url && (tab.url.startsWith('http://') || tab.url.startsWith('https://'))) {
-                    chrome.tabs.reload(tabId);
-                    console.log('已通过reloadTab刷新标签页:', tab.url);
-                }
+                // if (tab.url && (tab.url.startsWith('http://') || tab.url.startsWith('https://'))) {
+                chrome.tabs.reload(tabId);
+                console.log('已通过reloadTab刷新标签页:', tab.url);
+                // }
             }
         });
         return;
@@ -218,7 +226,7 @@ function updateProxyRules(shouldReloadActiveTab = false) {
             { value: { mode: "pac_script", pacScript: { data: proxyScript } }, scope: 'regular' },
             function (result) {
                 if (chrome.runtime.lastError) {
-                    console.error('设置代理失败:', chrome.runtime.lastError);
+                    console.log('设置代理失败:', chrome.runtime.lastError);
                 } else {
                     console.log('已更新代理规则');
                     // 如果需要刷新当前标签页
@@ -272,7 +280,7 @@ function testProxyAvailability(server, port, callback) {
         { value: testProxySettings, scope: 'regular' },
         function () {
             if (chrome.runtime.lastError) {
-                console.error('设置测试代理失败:', chrome.runtime.lastError);
+                console.log('设置测试代理失败:', chrome.runtime.lastError);
                 restoreProxySettings();
                 callback({ success: false, error: '设置代理失败' });
                 return;
@@ -313,7 +321,7 @@ function testProxyAvailability(server, port, callback) {
                 .catch(error => {
                     clearTimeout(timeoutId);
                     restoreProxySettings();
-                    console.error('代理测试错误:', error);
+                    console.log('代理测试错误:', error.message);
                     callback({ success: false, error: error.message });
                 });
         }
