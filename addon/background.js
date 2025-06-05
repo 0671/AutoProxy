@@ -83,60 +83,52 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 // 初始化时加载数据
 loadStoredData();
 
-// 监听 HTTP 请求的结果
+function handleAutoProxy(details, reason) {
+    console.log(reason);
+    if (!pluginEnabled) return;
+    if (!proxyConfig.server || !proxyConfig.port) return;
+
+    const url = new URL(details.url);
+    const domain = url.hostname;
+
+    if (!proxiedDomains.includes(domain)) {
+        proxiedDomains.push(domain);
+        chrome.storage.local.set({ proxiedDomains: proxiedDomains });
+        updateProxyRules();
+
+        let msg = reason === '403' ? '因为检测到 403 错误' : '因为访问超时';
+        chrome.notifications.create({
+            type: 'basic',
+            iconUrl: 'img/icons/icon-48.png',
+            title: '代理已启用',
+            message: `已为 ${domain} 启用代理，${msg}`
+        });
+
+        if (details.tabId && details.tabId !== -1) {
+            setTimeout(() => {
+                try {
+                    chrome.tabs.reload(details.tabId);
+                } catch (e) {}
+            }, 500);
+        }
+    }
+}
+
+// 403
 chrome.webRequest.onCompleted.addListener(
     function (details) {
-        if (!pluginEnabled) {
-            console.log('插件已禁用，不做任何处理');
-            return;
-        }
-        // 检查是否收到 403 错误
         if (details.statusCode === 403) {
+            handleAutoProxy(details, '403');
+        }
+    },
+    { urls: ["<all_urls>"] }
+);
 
-            // 如果没有配置代理，不执行任何操作
-            if (!proxyConfig.server || !proxyConfig.port) {
-                console.log('还未设置代理！');
-                return;
-            }
-
-            const url = new URL(details.url);
-            const domain = url.hostname;
-
-            // 如果域名不在被代理列表中，添加它
-            if (!proxiedDomains.includes(domain)) {
-                proxiedDomains.push(domain);
-
-                // 保存到存储
-                chrome.storage.local.set({ proxiedDomains: proxiedDomains });
-
-                // 应用新的代理规则
-                updateProxyRules();
-
-                // 记录日志
-                console.log(`已为 ${domain} 启用代理`);
-
-                // 通知用户
-                chrome.notifications.create({
-                    type: 'basic',
-                    iconUrl: 'img/icons/icon-48.png',
-                    title: '代理已启用',
-                    message: `已为 ${domain} 启用代理，因为检测到 403 错误`
-                });
-
-                // 确保尝试刷新请求来源的标签页，不管是主资源还是子资源的 403 错误
-                console.log(`xxxx ${details.tabId}`);
-                if (details.tabId && details.tabId !== -1) {
-                    // 使用延迟确保代理设置已应用
-                    setTimeout(() => {
-                        try {
-                            chrome.tabs.reload(details.tabId);
-                            console.log(`已尝试刷新标签页 ${details.tabId}`);
-                        } catch (e) {
-                            console.log(`刷新标签页失败: ${e}`);
-                        }
-                    }, 500); // 500毫秒延迟，确保代理设置已应用
-                }
-            }
+// 超时
+chrome.webRequest.onErrorOccurred.addListener(
+    function (details) {
+        if (details.error === "net::ERR_TIMED_OUT") {
+            handleAutoProxy(details, 'timeout');
         }
     },
     { urls: ["<all_urls>"] }
