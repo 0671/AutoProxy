@@ -43,6 +43,13 @@ function loadStoredData() {
         console.log('已从存储加载代理域名:', proxiedDomains);
         updateProxyRules();
 
+        // 加载代理配置
+        if (result.proxyConfig) {
+            proxyConfig = result.proxyConfig;
+        } else {
+            proxyConfig = {};
+        }
+
         // 加载扩展设置，或使用默认值
         if (result.extensionSettings) {
             // 合并默认设置和已保存设置
