@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "AutoProxy",
+  "version": "1.0",
+  "description": "AutoProxy 是一款 Chrome 浏览器扩展，能够自动检测网页访问中的 403 错误，并根据用户配置的代理服务器自动切换代理，提升访问体验。支持自定义代理规则、域名管理、批量导入导出等功能。",
+  "author": { "email": "h.vi@qq.com" },
+  "permissions": [
+    "storage",
+    "proxy",
+    "tabs",
+    "webRequest",
+    "notifications"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "img/icons/icon-128.png",
+      "16": "img/icons/icon-16.png",
+      "24": "img/icons/icon-24.png",
+      "32": "img/icons/icon-32.png",
+      "48": "img/icons/icon-48.png",
+      "64": "img/icons/icon-64.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "128": "img/icons/icon-128.png",
+    "16": "img/icons/icon-16.png",
+    "24": "img/icons/icon-24.png",
+    "32": "img/icons/icon-32.png",
+    "48": "img/icons/icon-48.png",
+    "64": "img/icons/icon-64.png"
+  }
+}

@@ -1,0 +1,129 @@
+/* 代理状态指示器样式 */
+.proxy-status {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-available {
+    background-color: #2ecc71;
+    /* 绿色 */
+}
+
+.status-unavailable {
+    background-color: #95a5a6;
+    /* 灰色 */
+}
+
+.status-unknown {
+    background-color: #f1c40f;
+    /* 黄色 */
+}
+
+.status-error {
+    background-color: #e74c3c;
+    /* 红色 */
+}
+
+/* 添加测试代理按钮样式 */
+.test-proxy-btn {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 2px 8px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.test-proxy-btn:hover {
+    background-color: #2980b9;
+}
+
+/* 添加刷新当前页面按钮 */
+.refresh-btn {
+    margin-left: 10px;
+    background-color: #2ecc71;
+}
+
+.testing .status-indicator {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+.test-proxy-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.alert-box {
+    background-color: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: none;
+    /* 默认隐藏 */
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.disable-btn {
+    background-color: #95a5a6;
+}
+
+.disable-btn:hover {
+    background-color: #7f8c8d;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.plugin-status {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.plugin-enabled {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.plugin-disabled {
+    background-color: #f5f5f5;
+    color: #757575;
+}

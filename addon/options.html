@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>智能代理切换器 - 选项</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+
+<body>
+  <div class="container options-container">
+    <h1>智能代理切换器 - 选项</h1>
+
+    <div class="proxy-config section">
+      <h2>代理设置</h2>
+      <div class="form-group">
+        <label for="proxyServer">代理服务器:</label>
+        <input type="text" id="proxyServer" placeholder="例如: 127.0.0.1">
+      </div>
+      <div class="form-group">
+        <label for="proxyPort">端口:</label>
+        <input type="number" id="proxyPort" placeholder="例如: 8080">
+      </div>
+      <div class="buttons-group">
+        <button id="saveProxyConfig" class="btn primary">保存代理设置</button>
+        <button id="refreshCurrentPage" class="btn secondary">刷新当前页面</button>
+      </div>
+    </div>
+
+    <div class="domains section">
+      <h2>代理域名管理</h2>
+      <div class="domain-actions">
+        <input type="text" id="newDomain" placeholder="输入域名添加到代理列表">
+        <button id="addDomain" class="btn primary">添加域名</button>
+      </div>
+
+      <div class="domain-list-container">
+        <h3>当前被代理的域名</h3>
+        <ul id="domainList" class="domain-list"></ul>
+      </div>
+
+      <div class="buttons-group">
+        <button id="clearAllDomains" class="btn danger">清空所有域名</button>
+        <button id="exportDomains" class="btn secondary">导出域名列表</button>
+        <button id="importDomains" class="btn secondary">导入域名列表</button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display: none;">
+    </div>
+
+    <div class="advanced-settings section">
+      <div class="section-header collapsible" id="advancedSettingsToggle">
+        <h2>高级设置（点击展开）</h2>
+        <span class="toggle-icon">▼</span>
+      </div>
+      
+      <div class="collapsible-content" id="advancedSettingsContent" style="display: none;">
+        <div class="form-group">
+          <label for="testDomain">测试域名:</label>
+          <input type="text" id="testDomain" placeholder="例如: www.google.com">
+          <p class="help-text">用于测试代理连接的域名。默认是 www.google.com</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="testEndpoint">测试端点:</label>
+          <input type="text" id="testEndpoint" placeholder="例如: /generate_204">
+          <p class="help-text">测试URL的路径部分。默认是 /generate_204</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="testTimeout">超时时间 (毫秒):</label>
+          <input type="number" id="testTimeout" min="1000" max="60000" step="1000" placeholder="例如: 10000">
+          <p class="help-text">代理测试的超时时间，单位是毫秒。默认是 10000 (10秒)</p>
+        </div>
+        
+        <button id="saveAdvancedSettings" class="btn primary">保存高级设置</button>
+      </div>
+    </div>
+
+    <div class="info-section section">
+      <h2>使用指南</h2>
+      <p>这个扩展将自动检测遇到 403 错误的网站，并通过您配置的代理重新请求资源。</p>
+      <p>被代理的域名会保存在列表中，下次访问相同域名时会自动使用代理。</p>
+      <p>您可以在此页面手动添加或删除需要代理的域名。</p>
+      <div class="tips">
+        <h3>提示</h3>
+        <ul>
+          <li>点击"测试"按钮可以在新标签页中打开该域名</li>
+          <li>更改代理设置后，请点击"刷新当前页面"以应用新设置</li>
+          <li>您可以导出域名列表备份，也可以从备份文件导入</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+
+</html>

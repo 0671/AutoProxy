@@ -1,0 +1,102 @@
+/* 添加一些额外的样式以提升用户体验 */
+.options-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.domain-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.domain-list li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.domain-list li span {
+  flex-grow: 1;
+  word-break: break-all;
+}
+
+.buttons-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.test-btn {
+  background-color: #2ecc71;
+  color: white;
+  margin-left: 5px;
+}
+
+.tips {
+  background-color: #f9f9f9;
+  border-left: 4px solid #3498db;
+  padding: 10px 15px;
+  margin-top: 20px;
+}
+
+.tips ul {
+  margin: 10px 0 0 20px;
+  padding: 0;
+}
+
+.domain-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.domain-actions input {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.message {
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-weight: 500;
+}

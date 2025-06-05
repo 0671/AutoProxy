@@ -1,0 +1,293 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  width: 350px;
+  padding: 15px;
+}
+
+.options-container {
+  width: 600px;
+  margin: 20px auto;
+}
+
+h1 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #3498db;
+}
+
+h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.remove-btn {
+  background-color: #e74c3c;
+  padding: 4px 8px;
+  font-size: 12px;
+  margin: 0 0 0 10px;
+}
+
+.remove-btn:hover {
+  background-color: #c0392b;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+li {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+.proxy-config, .domains, .actions {
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.domain-actions {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.domain-actions input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: white;
+  z-index: 1000;
+  animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+}
+
+.success {
+  background-color: #2ecc71;
+}
+
+.error {
+  background-color: #e74c3c;
+}
+
+.info {
+  background-color: #3498db;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.info-section {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.info-section p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+/* 代理状态指示器样式 */
+.proxy-status {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-available {
+  background-color: #2ecc71; /* 绿色 */
+}
+
+.status-unavailable {
+  background-color: #95a5a6; /* 灰色 */
+}
+
+.status-unknown {
+  background-color: #f1c40f; /* 黄色 */
+}
+
+.status-error {
+  background-color: #e74c3c; /* 红色 */
+}
+
+/* 添加测试代理按钮样式 */
+.test-proxy-btn {
+  margin-left: auto;
+  font-size: 12px;
+  padding: 2px 8px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.test-proxy-btn:hover {
+  background-color: #2980b9;
+}
+
+.test-proxy-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* 添加刷新当前页面按钮 */
+.refresh-btn {
+  margin-left: 10px;
+  background-color: #2ecc71;
+}
+
+/* 按钮组样式 */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* 消息提示样式 */
+.message {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  z-index: 10000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.message.success {
+  background-color: #2ecc71;
+}
+
+.message.error {
+  background-color: #e74c3c;
+}
+
+.message.info {
+  background-color: #3498db;
+}
+
+/* 折叠面板样式 */
+.section-header.collapsible {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.section-header.collapsible:hover {
+  background-color: #f9f9f9;
+}
+
+.section-header.collapsible h2 {
+  margin: 0;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  color: #3498db;
+}
+
+.collapsible-content {
+  padding-top: 15px;
+}
+
+/* 高级设置具体样式 */
+.help-text {
+  color: #7f8c8d;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+
+.advanced-settings .form-group {
+  margin-bottom: 15px;
+}

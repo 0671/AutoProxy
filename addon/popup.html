@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>智能代理切换器</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>智能代理切换器</h1>
+    <!-- 添加警告提示框 -->
+    <div class="alert-box" id="proxyConfigAlert">
+      请设置代理服务器和端口才能正常使用插件功能！
+    </div>
+    <!-- 插件状态显示 -->
+    <h2 class="plugin-status plugin-enabled" id="pluginStatus">
+      插件已启用
+    </h2>
+
+    <div class="proxy-config">
+      <h2>代理设置</h2>
+      <div class="form-group">
+        <label for="proxyServer">代理服务器:</label>
+        <input type="text" id="proxyServer" placeholder="例如: 127.0.0.1">
+      </div>
+      <div class="form-group">
+        <label for="proxyPort">端口:</label>
+        <input type="number" id="proxyPort" placeholder="例如: 8080">
+      </div>
+      <!-- 添加代理状态指示器 -->
+      <div class="proxy-status">
+        <span class="status-indicator status-unknown" id="proxyStatusIndicator"></span>
+        <span id="proxyStatusText">状态未知</span>
+        <button class="test-proxy-btn" id="testProxyBtn">测试代理</button>
+      </div>
+      <div class="button-group">
+        <button id="saveProxyConfig">保存代理设置</button>
+        <button id="refreshCurrentPage" class="refresh-btn">刷新当前页面</button>
+      </div>
+    </div>
+    <div class="domains">
+      <h2>当前被代理的域名</h2>
+      <ul id="domainList"></ul>
+    </div>
+
+    <div class="button-row">
+      <button id="openOptions">更多选项</button>
+      <!-- 关闭插件按钮 -->
+      <button id="disablePlugin" class="disable-btn">禁用插件</button>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>
