@@ -302,13 +302,8 @@ function testProxyAvailability(server, port, callback) {
                     clearTimeout(timeoutId);
                     restoreProxySettings();
 
-                    if (response.status === 204) {
-                        console.log('代理测试成功');
-                        callback({ success: true });
-                    } else {
-                        console.log('代理测试失败: 状态码 ' + response.status);
-                        callback({ success: false, error: '意外的状态码: ' + response.status });
-                    }
+                    console.log(`代理测试成功，状态码: ${response.status}`)
+                    callback({  success: true,  statusCode: response.status  });
                 })
                 .catch(error => {
                     clearTimeout(timeoutId);
