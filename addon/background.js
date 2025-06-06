@@ -47,7 +47,10 @@ function loadStoredData() {
         if (result.proxyConfig) {
             proxyConfig = result.proxyConfig;
         } else {
-            proxyConfig = {};
+            proxyConfig = {
+                server:'192.168.10.100',
+                port:'8085'
+            };
         }
 
         // 加载扩展设置，或使用默认值
@@ -83,35 +86,72 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 // 初始化时加载数据
 loadStoredData();
 
-function handleAutoProxy(details, reason) {
-    console.log(reason);
-    if (!pluginEnabled) return;
-    if (!proxyConfig.server || !proxyConfig.port) return;
-
-    const url = new URL(details.url);
-    const domain = url.hostname;
-
-    if (!proxiedDomains.includes(domain)) {
-        proxiedDomains.push(domain);
-        chrome.storage.local.set({ proxiedDomains: proxiedDomains });
-        updateProxyRules();
-
-        let msg = reason === '403' ? '因为检测到 403 错误' : '因为访问超时';
-        chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'img/icons/icon-48.png',
-            title: '代理已启用',
-            message: `已为 ${domain} 启用代理，${msg}`
-        });
-
-        if (details.tabId && details.tabId !== -1) {
-            setTimeout(() => {
-                try {
-                    chrome.tabs.reload(details.tabId);
-                } catch (e) {}
-            }, 500);
-        }
+// 检查标签页是否是正常标签页(非插件页面)
+function isNormalTab(details, callback) {
+    console.log('--------')
+    console.log(details.tabId)
+    console.log(details.url)
+    // 如果没有关联的标签页，则不处理
+    if (!details.tabId || details.tabId === -1) {
+        callback(false);
+        return;
     }
+
+    // 通过tab ID检查标签页URL
+    chrome.tabs.get(details.tabId, function(tab) {
+        if (chrome.runtime.lastError) {
+            // 如果获取标签页失败，不处理
+            console.log('获取便签页失败')
+            callback(false);
+            return;
+        }
+
+        // 检查标签页URL是否是插件页面或特殊页面
+        const isNormal = tab && tab.url && 
+            !tab.url.startsWith('chrome://') && // chrome配置页面
+            !tab.url.startsWith('chrome-extension://') && // 插件页面
+            !tab.url.startsWith('about:') &&
+            !tab.url.startsWith('devtools://'); // 调试页面
+        
+        callback(isNormal);
+    });
+}
+
+function handleAutoProxy(details, reason) {
+    isNormalTab(details, function(isNormal) {
+        if (!isNormal) {
+            console.log(`忽略非正常标签页的403或超时请求: ${details.url}`);
+            return;
+        }
+
+        if (!pluginEnabled) return;
+        if (!proxyConfig.server || !proxyConfig.port) return;
+
+        const url = new URL(details.url);
+        const domain = url.hostname;
+
+        if (!proxiedDomains.includes(domain)) {
+            proxiedDomains.push(domain);
+            chrome.storage.local.set({ proxiedDomains: proxiedDomains });
+            updateProxyRules();
+
+            let msg = reason === '403' ? '因为检测到 403 错误' : '因为访问超时';
+            chrome.notifications.create({
+                type: 'basic',
+                iconUrl: 'img/icons/icon-48.png',
+                title: '代理已启用',
+                message: `已为 ${domain} 启用代理，${msg}`
+            });
+
+            if (details.tabId && details.tabId !== -1) {
+                setTimeout(() => {
+                    try {
+                        chrome.tabs.reload(details.tabId);
+                    } catch (e) {}
+                }, 500);
+            }
+        }
+    })
 }
 
 // 403

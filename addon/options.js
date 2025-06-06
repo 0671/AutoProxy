@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
           showMessage('文件格式无效!', 'error');
         }
       } catch (error) {
-        console.error('导入失败:', error);
+        console.log('导入失败:', error);
         showMessage('导入失败!', 'error');
       }
 
@@ -208,7 +208,7 @@ function loadProxiedDomains() {
 
   chrome.runtime.sendMessage({ action: "getProxiedDomains" }, function (domains) {
     if (chrome.runtime.lastError) {
-      console.error('获取域名列表失败:', chrome.runtime.lastError);
+      console.log('获取域名列表失败:', chrome.runtime.lastError);
       showMessage('加载域名列表失败', 'error');
       return;
     }
@@ -218,7 +218,7 @@ function loadProxiedDomains() {
 
     // 确保 domains 是数组
     if (!Array.isArray(domains)) {
-      console.error('接收到的域名列表不是有效数组:', domains);
+      console.log('接收到的域名列表不是有效数组:', domains);
       domains = [];
     }
 
@@ -311,7 +311,7 @@ function removeDomain(domain) {
       tabId: tabId // 包括当前标签页ID
     }, function (response) {
       if (chrome.runtime.lastError) {
-        console.error('移除域名失败:', chrome.runtime.lastError);
+        console.log('移除域名失败:', chrome.runtime.lastError);
         showMessage(`移除 ${domain} 失败`, 'error');
         return;
       }
@@ -321,7 +321,7 @@ function removeDomain(domain) {
         loadProxiedDomains();
         showMessage(`已从代理列表中移除 ${domain}`);
       } else {
-        console.error('移除域名失败:', domain);
+        console.log('移除域名失败:', domain);
         showMessage(`移除 ${domain} 失败`, 'error');
       }
     });
@@ -332,7 +332,7 @@ function removeDomain(domain) {
 function loadAdvancedSettings() {
   chrome.runtime.sendMessage({action: "getExtensionSettings"}, function(settings) {
     if (chrome.runtime.lastError) {
-      console.error('获取设置失败:', chrome.runtime.lastError);
+      console.log('获取设置失败:', chrome.runtime.lastError);
       return;
     }
     

@@ -239,7 +239,7 @@ function loadProxiedDomains() {
     // 确保 domains 是数组
     if (!Array.isArray(domains)) {
       domains = [];
-      console.error('接收到的域名列表不是有效数组');
+      console.log('接收到的域名列表不是有效数组');
     }
 
     if (domains.length === 0) {
